@@ -16,26 +16,23 @@ def root():
   return { "message": "HEllo" }
 
 @app.get("/encode/{num}")
-def encode(num: int = Path(title="The ID of the item to get", ge = 0, le=99999999)):
-  if num < 0:
-    raise HTTPException(status_code=404, detail="Invalid number")
+def encode(num: int = Path(title="The number that will be encoded", ge = 0, le=99999999)):
   s = []
   while True:
     num, r = divmod(num, BASE)
-    print(num, r)
     s.append(find_key(r))
-    print(s)
     if num == 0: break
   s = ''.join(reversed(s))
   return s.rjust(6, '-')
 
 @app.get("/decode/{code}")
-def decode(code: str):
+async def decode(code: str = Query(min_length=6, max_length=6, regex=char_list)):
+  if len(code) != 6:
+    raise HTTPException(status_code=422, detail="Invalid size")
   n = 0
   for c in code:
     if c == "-":
       n = 0
     else:
       n = n * BASE + dict_char[c]
-      print(n)
   return n
