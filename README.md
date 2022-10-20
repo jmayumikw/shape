@@ -1,15 +1,29 @@
-# shape
-Teste técnico processo seletivo
+# Encode and decode apis
+App with decode and decode apis.
 
-# 1 passo liberar acesso ao script bash
+Encode receive a number and return a string
+
+Decode receive a string and return a number
+
+
+### Step-1: enable access for bash script 
+```
 chmod +x ./setup.sh ./stop.sh
-
-# 2 passo buildar docker
+```
+### Step-2: build and run app
+```
 ./setup.sh
-
-# 3 passo derrubar o docker
+```
+### Step-3: stop app
+```
 ./stop.sh
+```
+### To access on local
+```
+http://localhost:8000/
+```
 
-# para acessar o as apis http://localhost:8000/
-
-# para testar rodar pytest
+### To run tests
+```
+pytest
+```
