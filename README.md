@@ -1,13 +1,15 @@
 # shape
 Teste técnico processo seletivo
 
-# 1 passo para criar o docker
-docker build -t myimage .
+# 1 passo liberar acesso ao script bash
+chmod +x ./setup.sh ./stop.sh
 
-# 2 passo subir o docker
-docker run -d --name fastapi -p 8000:8000 myimage
+# 2 passo buildar docker
+./setup.sh
 
 # 3 passo derrubar o docker
-docker stop fastapi
+./stop.sh
 
 # para acessar o as apis http://localhost:8000/
+
+# para testar rodar pytest

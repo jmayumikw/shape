@@ -1,38 +1,39 @@
-from fastapi import FastAPI, Path, Query, HTTPException
+
 import string
+from unittest import result
+from fastapi import FastAPI, Path, HTTPException
 app = FastAPI()
 
-char_list = string.ascii_uppercase + string.ascii_lowercase + string.digits + '!@#$%*()|_=+^/?'
-BASE = len(char_list)
-dict_char = { char_list[i]: i for i in range(len(char_list))}
+CHAR_LIST = string.ascii_uppercase + string.ascii_lowercase + string.digits + '!@#$%*()|_=+^/?'
+BASE = len(CHAR_LIST)
+DICT_CHAR = { CHAR_LIST[i]: i for i in range(len(CHAR_LIST))}
 
 def find_key(value):
-  for k, v in dict_char.items():
-    if v == value:
-      return k
-
-@app.get('/')
-def root():
-  return { "message": "HEllo" }
+  for key, val in DICT_CHAR.items():
+    if val == value:
+      return key
 
 @app.get("/encode/{num}")
-def encode(num: int = Path(title="The number that will be encoded", ge = 0, le=99999999)):
-  s = []
+def encode(num: int = Path(title = "The number that will be encoded", ge = 0, le=99999999)):
+  res_list = []
   while True:
-    num, r = divmod(num, BASE)
-    s.append(find_key(r))
+    num, rest = divmod(num, BASE)
+    res_list.append(find_key(rest))
     if num == 0: break
-  s = ''.join(reversed(s))
-  return s.rjust(6, '-')
+  result = ''.join(reversed(res_list))
+  return {"encode": result.rjust(6, '-')}
 
 @app.get("/decode/{code}")
-async def decode(code: str = Query(min_length=6, max_length=6, regex=char_list)):
+def decode(code: str):
   if len(code) != 6:
-    raise HTTPException(status_code=422, detail="Invalid size")
-  n = 0
-  for c in code:
-    if c == "-":
-      n = 0
+    raise HTTPException(status_code = 422, detail = "Invalid length")
+  result = 0
+  for char in code:
+    if char == "-":
+      result = 0
     else:
-      n = n * BASE + dict_char[c]
-  return n
+      try:
+        result = result * BASE + DICT_CHAR[char]
+      except:
+        raise HTTPException(status_code = 422, detail = "Invalid input")
+  return {"decode": result}
