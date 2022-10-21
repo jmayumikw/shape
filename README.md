@@ -23,6 +23,11 @@ chmod +x ./setup.sh ./stop.sh
 http://localhost:8000/
 ```
 
+### To access swagger
+```
+http://localhost:8000/docs
+```
+
 ### To run tests
 ```
 pytest
